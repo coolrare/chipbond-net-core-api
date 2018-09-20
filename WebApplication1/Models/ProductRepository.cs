@@ -27,7 +27,7 @@ namespace WebApplication1.Models
 
         public IEnumerable<Product> GetAll()
         {
-            using (IDbConnection conn = Connection)
+            using(IDbConnection conn = Connection)
             {
                 conn.Open();
                 string sQuery =
@@ -35,5 +35,28 @@ namespace WebApplication1.Models
                 return conn.Query<Product>(sQuery, new { ID = 10 });
             }
         }
+
+        public Product GetById(int id)
+        {
+            using(IDbConnection conn = Connection)
+            {
+                conn.Open();
+                string sQuery =
+                    "SELECT ProductId, ProductName, Price FROM dbo.Product WHERE ProductId = @ID";
+                return conn.Query<Product>(sQuery, new { ID = id }).FirstOrDefault();
+            }
+        }
+
+        public IEnumerable<OrderLine> GetOrderLines(int id)
+        {
+            using(IDbConnection conn = Connection)
+            {
+                conn.Open();
+                string sQuery =
+                    "SELECT OrderId, LineNumber, ProductId, Qty, LineTotal FROM dbo.OrderLine WHERE ProductId = @ID";
+                return conn.Query<OrderLine>(sQuery, new { ID = id });
+            }
+        }
+
     }
 }

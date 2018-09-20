@@ -36,9 +36,16 @@ namespace WebApplication1.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult<Product> GetById(int id)
         {
-            return data[id];
+            return Ok(repo.GetById(id));
+        }
+        
+        // GET api/values/5/orderlines
+        [HttpGet("{id}/orderlines")]
+        public ActionResult<IEnumerable<OrderLine>> GetOrderLines(int id)
+        {
+            return Ok(repo.GetOrderLines(id));
         }
 
         // POST api/values
