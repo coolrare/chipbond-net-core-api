@@ -38,7 +38,12 @@ namespace WebApplication1.Controllers
         [HttpGet("{id}", Name = "ProductGetById")]
         public ActionResult<Product> GetById(int id)
         {
-            return Ok(repo.GetById(id));
+            var item = repo.GetById(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            return Ok();
         }
         
         // GET api/values/5/orderlines
@@ -54,7 +59,9 @@ namespace WebApplication1.Controllers
         {
             Product inserted = repo.CreateProduct(value);
 
-            return Created(Url.RouteUrl("ProductGetById", new { id = inserted.ProductId }), inserted);
+            return Created(Url.RouteUrl("ProductGetById", 
+                        new { id = inserted.ProductId }),
+                        inserted);
         }
 
         // PUT api/values/5
