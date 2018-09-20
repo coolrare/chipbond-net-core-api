@@ -58,5 +58,22 @@ namespace WebApplication1.Models
             }
         }
 
+        public Product CreateProduct(Product prod)
+        {
+            using(IDbConnection conn = Connection)
+            {
+                conn.Open();
+                string sQuery = @"
+                        INSERT INTO [dbo].[Product] 
+                            ([ProductName],[Price],[Active],[Stock])
+                        VALUES
+                            (@ProductName,@Price,1,1);
+                        SELECT CAST(SCOPE_IDENTITY() as int)";
+                int insertedId = conn.Query<int>(sQuery, prod).FirstOrDefault();
+                prod.ProductId = insertedId;
+                return prod;
+            }
+        }
+
     }
 }

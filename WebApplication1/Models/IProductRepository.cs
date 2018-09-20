@@ -7,5 +7,6 @@ namespace WebApplication1.Models
         IEnumerable<Product> GetAll();
         Product GetById(int id);
         IEnumerable<OrderLine> GetOrderLines(int id);
+        Product CreateProduct(Product product);
     }
 }

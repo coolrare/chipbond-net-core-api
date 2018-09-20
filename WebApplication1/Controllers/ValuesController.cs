@@ -10,7 +10,7 @@ using Dapper;
 
 namespace WebApplication1.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/values")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
@@ -35,7 +35,7 @@ namespace WebApplication1.Controllers
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "ProductGetById")]
         public ActionResult<Product> GetById(int id)
         {
             return Ok(repo.GetById(id));
@@ -50,9 +50,11 @@ namespace WebApplication1.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult Post([FromBody] Product value)
         {
-            data.Add(value);
+            Product inserted = repo.CreateProduct(value);
+
+            return Created(Url.RouteUrl("ProductGetById", new { id = inserted.ProductId }), inserted);
         }
 
         // PUT api/values/5
